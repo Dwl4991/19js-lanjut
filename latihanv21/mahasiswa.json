@@ -1,0 +1,30 @@
+[
+  {
+    "nama": "candra",
+    "nrp": "45638476395874",
+    "email": "candra@gmail.com",
+    "jurusan": "teknik informatika",
+    "idDosenWali": 1
+  },
+  {
+    "nama": "dessy",
+    "nrp": "45638476395874",
+    "email": "dessy@gmail.com",
+    "jurusan": "teknik biologi",
+    "idDosenWali": 2
+  },
+  {
+    "nama": "kenan",
+    "nrp": "45638476395874",
+    "email": "kenan@gmail.com",
+    "jurusan": "teknik informatika",
+    "idDosenWali": 3
+  },
+  {
+    "nama": "dian",
+    "nrp": "45638476395874",
+    "email": "dian@gmail.com",
+    "jurusan": "teknik biologi",
+    "idDosenWali": 4
+  }
+]
