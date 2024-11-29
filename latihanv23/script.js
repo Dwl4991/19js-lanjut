@@ -13,7 +13,7 @@ $.ajax({
                     <a href="#" class="btn btn-primary">Show Detail</a>
                     </div>
                     </div>
-    </div>`;
+                     </div>`;
        })
     },
     error: () => {
