@@ -1,22 +1,69 @@
-$.ajax({
-    url: 'http://www.omdbapi.com/?apikey=d1783883&s=warkop',
-    success: results => {
-       const movies = results.Search;
-       let cards ='';
-       movies.forEach(m => {
-        cards += ` <div class="col-md-4 my-5">
+$('.search-button').on('click', function() {
+    
+    $.ajax({
+        url: 'http://www.omdbapi.com/?apikey=d1783883&s=' + $('.input-keyword').val(),
+        success: results => {
+           const movies = results.Search;
+           let cards ='';
+           movies.forEach(m => {
+            cards += showCard(m);
+           });
+           $('.movie-container').html(cards);
+           
+        //    ketika tombo;detail di click
+        $('.modal-detail-button').on('click', function(){
+         $.ajax({
+            url: 'http://www.omdbapi.com/?apikey=d1783883&i=' + $(this).data('imdbid'),
+            success: m => {
+                console.log(m);
+                
+                const movieDetail = showMovieDetail(m);
+                $('.modal-body').html(movieDetail);
+            },
+            error: (e) => {
+                console.log(e.responseText);
+            }
+         });
+        });
+        },
+        error: (e) => {
+            console.log(e.responseText);
+        }
+    });
+});
+
+
+
+
+function showCard(m) {
+    return ` <div class="col-md-4 my-5">
                    <div class="card" >
-                   <img src="" class="card-img-top" ">
+                   <img src="${m.Poster}" class="card-img-top" ">
                    <div class="card-body">
-                     <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Tahun Realease</h6>
-                    <a href="#" class="btn btn-primary">Show Detail</a>
+                     <h5 class="card-title">${m.Titile}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">${m.Year}</h6>
+                    <a href="#" class="btn btn-primary modal-detail-button" data-toggle="modal" data-target="#movieDetailModal" data-imdbid="${m.imdbID}">Show Detail</a>
                     </div>
                     </div>
                      </div>`;
-       })
-    },
-    error: () => {
-        console.log(e.responseText);
-    }
-});
+}
+
+function showMovieDetail(m) {
+    return `<div class="container-fluid">
+             <div class="row">
+                <div class="col-md-3">
+                <img src="${m.Poster}" class="img-fluid" >
+                </div>
+                <div class="col-md">
+                <ul class="list-group">
+                    <li class="list-group-item"><h4>${m.Title} (${m.Year})</h4></li>
+                    <li class="list-group-item"><strong>${m.Director}</strong></li>
+                    <li class="list-group-item"><strong>${m.Actors}</strong></li>
+                    <li class="list-group-item"><strong>${m.Writer}</strong></li>
+                    <li class="list-group-item"><strong>${m.Plot}</strong><br>a</li>
+                </ul>
+                </div>
+            </div>
+            </div>`;
+            
+}
