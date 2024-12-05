@@ -1,34 +1,70 @@
-$('.search-button').on('click', function() {
+// $('.search-button').on('click', function() {
     
-    $.ajax({
-        url: 'http://www.omdbapi.com/?apikey=d1783883&s=' + $('.input-keyword').val(),
-        success: results => {
-           const movies = results.Search;
-           let cards ='';
-           movies.forEach(m => {
-            cards += showCard(m);
-           });
-           $('.movie-container').html(cards);
+//     $.ajax({
+//         url: 'http://www.omdbapi.com/?apikey=d1783883&s=' + $('.input-keyword').val(),
+//         success: results => {
+//            const movies = results.Search;
+//            let cards ='';
+//            movies.forEach(m => {
+//             cards += showCard(m);
+//            });
+//            $('.movie-container').html(cards);
            
-        //    ketika tombo;detail di click
-        $('.modal-detail-button').on('click', function(){
-         $.ajax({
-            url: 'http://www.omdbapi.com/?apikey=d1783883&i=' + $(this).data('imdbid'),
-            success: m => {
-                console.log(m);
+//         //    ketika tombo;detail di click
+//         $('.modal-detail-button').on('click', function(){
+//          $.ajax({
+//             url: 'http://www.omdbapi.com/?apikey=d1783883&i=' + $(this).data('imdbid'),
+//             success: m => {
+//                 console.log(m);
                 
-                const movieDetail = showMovieDetail(m);
-                $('.modal-body').html(movieDetail);
-            },
-            error: (e) => {
-                console.log(e.responseText);
-            }
-         });
+//                 const movieDetail = showMovieDetail(m);
+//                 $('.modal-body').html(movieDetail);
+//             },
+//             error: (e) => {
+//                 console.log(e.responseText);
+//             }
+//          });
+//         });
+//         },
+//         error: (e) => {
+//             console.log(e.responseText);
+//         }
+//     });
+// });
+
+
+//fetch
+const searchButton = document.querySelector('.search-button');
+searchButton.addEventListener('click', function(){
+
+    const inputkeword = document.querySelector('.input-keyword');
+    fetch('http://www.omdbapi.com/?apikey=d1783883&s=' + inputkeword.value)
+    .then(response => response.json())
+    .then(response => {
+        const movies = response.Search;
+        let cards = '';
+        movies.forEach(m => cards += showCard(m));
+        const movieContainer = document.querySelector('.movie-container');
+        movieContainer.innerHTML = cards;
+
+        //ketika tombol detail di klik
+        const modalDetailButton = document.querySelectorAll('.modal-detail-button');
+        modalDetailButton.forEach(btn => {
+            btn.addEventListener('click', function(){
+            const imdbid = this.dataset.imdbid;
+           fetch('http://www.omdbapi.com/?apikey=d1783883&i=' + imdbid)
+           .then(response => response.json())
+           .then(m => {
+            const movieDetail = showMovieDetail(m);
+            const modalBody = document.querySelector('.modal-body');
+            modalBody.innerHTML = movieDetail;
+           });
+            
+                    
+            });
         });
-        },
-        error: (e) => {
-            console.log(e.responseText);
-        }
+
+
     });
 });
 
@@ -40,7 +76,7 @@ function showCard(m) {
                    <div class="card" >
                    <img src="${m.Poster}" class="card-img-top" ">
                    <div class="card-body">
-                     <h5 class="card-title">${m.Titile}</h5>
+                     <h5 class="card-title">${m.Title}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">${m.Year}</h6>
                     <a href="#" class="btn btn-primary modal-detail-button" data-toggle="modal" data-target="#movieDetailModal" data-imdbid="${m.imdbID}">Show Detail</a>
                     </div>
